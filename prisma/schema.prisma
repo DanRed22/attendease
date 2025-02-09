@@ -34,7 +34,7 @@ model fields {
     id        Int       @id @default(autoincrement())
     display_name String
     name      String
-    type      String?
+    type      String? @default("text")
     config    String?
     required  Boolean   @default(false)
     createdAt DateTime  @default(now())

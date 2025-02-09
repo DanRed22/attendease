@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import Prisma from '@prisma/client'
 import moment from 'moment'
 
@@ -10,16 +10,15 @@ export async function GET() {
             orderBy: {
                 createdAt: 'desc',
             },
-            skip: offset,
-            take: number_of_items,
         })
         return NextResponse.json({
-            field,
+            data: field || [],
             message: 'Fields found',
             status: 200,
         })
     } catch (error) {
         return NextResponse.json({
+            data: [],
             message: 'Error fetching fields',
             status: 500,
         })
