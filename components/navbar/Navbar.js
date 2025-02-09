@@ -15,7 +15,6 @@ export default function Navbar() {
 
     const checkAuth = async () => {
         const authStatus = await isAuthenticated()
-        console.log('Auth Status:', authStatus)
         setShow(authStatus) // Set state only after checking auth
 
         if (!authStatus) {

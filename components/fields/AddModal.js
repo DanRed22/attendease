@@ -21,7 +21,7 @@ const AddModal = ({ show, handleClose }) => {
     }
 
     const handleAdd = async (fieldData) => {
-        console.log('Adding field:', fieldData)
+        'Adding field:', fieldData
         try {
             const response = await fetch('/api/fields', {
                 method: 'POST',
@@ -31,7 +31,6 @@ const AddModal = ({ show, handleClose }) => {
                 body: JSON.stringify(fieldData),
             })
             const data = await response.json()
-            console.log('Field added:', data)
             Swal.fire({
                 icon: 'success',
                 title: 'Success',

@@ -44,7 +44,6 @@ export default function Home() {
             })
         } else {
             const data = await response.json()
-            console.log(data)
             Swal.fire({
                 title: 'Error!',
                 text: data?.message || 'An error occurred',
