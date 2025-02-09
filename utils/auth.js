@@ -47,7 +47,6 @@ export const getUserRole = async () => {
 export const isAuthenticated = async () => {
     const isAuthenticated =
         Cookies.get('isAuthenticated') && checkExpired() === false
-    console.log('isAuthenticated:', isAuthenticated)
     if (isAuthenticated) {
         return true
     }
