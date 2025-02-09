@@ -2,7 +2,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, setup environment:
+be sure there is a .env file with proper credentials
+
+Second, run the development server:
 
 ```bash
 npm run dev

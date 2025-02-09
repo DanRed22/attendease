@@ -1,23 +1,34 @@
 {
-  "name": "attendease",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.1.6"
-  },
-  "devDependencies": {
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.6",
-    "@eslint/eslintrc": "^3"
-  }
+    "name": "attendease",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --turbopack",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.3.1",
+        "axios": "^1.7.9",
+        "bcryptjs": "^2.4.3",
+        "js-cookie": "^3.0.5",
+        "moment": "^2.30.1",
+        "next": "15.1.6",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "sweetalert2": "^11.16.0"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "daisyui": "^4.12.23",
+        "eslint": "^9",
+        "eslint-config-next": "15.1.6",
+        "postcss": "^8",
+        "prettier": "3.4.2",
+        "tailwindcss": "^3.4.1"
+    },
+    "prisma": {
+        "seed": "node prisma/seed.js"
+    }
 }

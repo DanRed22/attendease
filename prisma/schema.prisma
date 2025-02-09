@@ -1,0 +1,42 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model attendees {
+    id        Int       @id @default(autoincrement())
+    name      String
+    email     String
+    data      String?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+}
+
+model users {
+    id        Int       @id @default(autoincrement())
+    name      String
+    username  String
+    email     String    @unique
+    password  String
+    role      String
+    status    String?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+}
+
+model fields {
+    id        Int       @id @default(autoincrement())
+    name      String
+    type      String?
+    config    String?
+    required  Boolean   @default(false)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+}
