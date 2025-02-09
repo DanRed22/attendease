@@ -7,8 +7,10 @@ import { storeCookies } from '@/utils/auth'
 export default function Home() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault()
         const response = await fetch('/api/login', {
             method: 'POST',
@@ -35,13 +37,13 @@ export default function Home() {
                 allowEnterKey: false,
                 showConfirmButton: false,
                 timer: 3000,
-                onClose: () => {
+                willClose: () => {
+                    setLoading(false)
                     window.location.href = '/attendance'
                 },
             })
         } else {
             const data = await response.json()
-            console.log(data)
             Swal.fire({
                 title: 'Error!',
                 text: data?.message || 'An error occurred',
@@ -51,6 +53,7 @@ export default function Home() {
                 background: 'rgb(55 65 81)',
                 color: 'white',
             })
+            setLoading(false)
         }
     }
 
@@ -102,10 +105,11 @@ export default function Home() {
                 </label>
 
                 <button
+                    disabled={loading}
                     onClick={(e) => {
                         handleSubmit(e)
                     }}
-                    className="btn btn-primary mt-4 w-[40%] self-end"
+                    className={`btn mt-4 w-[40%] self-end ${loading ? 'btn-disabled' : 'btn-primary'}`}
                 >
                     Login
                 </button>

@@ -26,7 +26,6 @@ export async function POST(request) {
 
         //password = bcrypt.hashSync(password.toString().trim(), 10)
         const passwordMatch = await bcrypt.compare(password, user.password)
-        console.log(passwordMatch)
         delete user.password
         if (!passwordMatch) {
             return NextResponse.json(
