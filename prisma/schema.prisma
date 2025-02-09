@@ -32,6 +32,7 @@ model users {
 
 model fields {
     id        Int       @id @default(autoincrement())
+    display_name String
     name      String
     type      String?
     config    String?

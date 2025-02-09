@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
 import { checkExpired } from './utils/auth'
+import Cookies from 'js-cookie'
 
-const protectedRoutes = ['/events', '/profile', 'settings', '/attendance']
-const isAuthenticated = checkExpired()
+const protectedRoutes = ['/events', '/profile', '/settings', '/attendance']
+
 export default function middleware(req) {
-    if (!isAuthenticated && protectedRoutes.includes(req.nextUrl.pathname)) {
-        const absoluteURL = new URL('/', req.nextUrl.origin)
-        return NextResponse.redirect(absoluteURL.toString())
-    }
+    // const authCookie = req.cookies.get('isAuthenticated')
+    // const isAuthenticated = authCookie === 'true' && !checkExpired()
+    // if (!isAuthenticated && protectedRoutes.includes(req.nextUrl.pathname)) {
+    //     return NextResponse.redirect(new URL('/', req.nextUrl.origin))
+    // }
 }
