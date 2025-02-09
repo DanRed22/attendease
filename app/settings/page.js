@@ -96,6 +96,7 @@ export default function Settings() {
             <AddModal
                 show={showAddModal}
                 handleClose={() => setShowAddModal(false)}
+                refreshFields={fetchFields}
             />
             <h1 className="text-3xl">Settings</h1>
 
@@ -114,55 +115,103 @@ export default function Settings() {
                         </button>
                     </div>
                 </div>
-                <table className=" mt-4 bg-zinc-900 rounded-md w-[100%] p-8 ">
-                    <tr className="text-center font-bold">
-                        <td className="p-2 border bg-slate-800">
-                            Display Name
-                        </td>
-                        <td className="p-2 border bg-slate-800">DB Name</td>
-                        <td className="p-2 border bg-slate-800">Type</td>
-                        <td className="p-2 border bg-slate-800">Required</td>
-                        <td className="p-2 border bg-slate-800">Actions</td>
-                    </tr>
-                    {loading && <p className="text-center">Loading...</p>}
-                    <tbody>
-                        {Array.isArray(fields) &&
-                            fields.map((field) => (
-                                <tr
-                                    key={field.id}
-                                    className="text-center p-4 border-b border-gray-300"
-                                >
-                                    <td className="border p-2 overflow-elipsis">
-                                        {field.display_name}
-                                    </td>
-                                    <td className="border p-2 overflow-elipsis">
-                                        {field.name}
-                                    </td>
-                                    <td className="border p-2 overflow-elipsis">
-                                        {field.type}
-                                    </td>
-                                    <td className="border p-2 overflow-elipsis">
-                                        {field.required
-                                            ? 'Required'
-                                            : 'Optional'}
-                                    </td>
-                                    <td className="border p-2">
-                                        <button
-                                            onClick={() =>
-                                                handleDelete(field.id)
-                                            }
-                                        >
-                                            <TbTrashFilled size="1.5rem" />
-                                        </button>
-                                    </td>
-                                </tr>
+                {loading && <p className="text-center">Loading...</p>}
+                <div>
+                    <table className=" mt-4 bg-zinc-900 rounded-md w-[100%] p-8 ">
+                        <thead className="text-center font-bold">
+                            <tr>
+                                <th className="p-2 border bg-slate-800">
+                                    Display Name
+                                </th>
+                                <th className="p-2 border bg-slate-800">
+                                    DB Name
+                                </th>
+                                <th className="p-2 border bg-slate-800">
+                                    Type
+                                </th>
+                                <th className="p-2 border bg-slate-800">
+                                    Required
+                                </th>
+                                <th className="p-2 border bg-slate-800">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                key={'name'}
+                                className="text-center p-4 border-b border-gray-300 bg-slate-400 text-black"
+                            >
+                                <td className="border p-2 overflow-elipsis ">
+                                    Name
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    display_name
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    text
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    Required
+                                </td>
+                                <td className="border p-2">DEFAULT</td>
+                            </tr>
+                            <tr
+                                key={'email'}
+                                className="text-center p-4 border-b border-gray-300 bg-slate-400 text-black"
+                            >
+                                <td className="border p-2 overflow-elipsis ">
+                                    Email
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    email
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    text
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    Required
+                                </td>
+                                <td className="border p-2">DEFAULT</td>
+                            </tr>
+                            {Array.isArray(fields) &&
+                                fields.map((field) => (
+                                    <tr
+                                        key={field.id}
+                                        className="text-center p-4 border-b border-gray-300"
+                                    >
+                                        <td className="border p-2 overflow-elipsis">
+                                            {field.display_name}
+                                        </td>
+                                        <td className="border p-2 overflow-elipsis">
+                                            {field.name}
+                                        </td>
+                                        <td className="border p-2 overflow-elipsis">
+                                            {field.type}
+                                        </td>
+                                        <td className="border p-2 overflow-elipsis">
+                                            {field.required
+                                                ? 'Required'
+                                                : 'Optional'}
+                                        </td>
+                                        <td className="border p-2">
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(field.id)
+                                                }
+                                            >
+                                                <TbTrashFilled size="1.5rem" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                        {(Array.isArray(fields) && fields.length === 0) ||
+                            (!Array.isArray(fields) && (
+                                <p className="text-center">No Fields Found</p>
                             ))}
-                    </tbody>
-                    {(Array.isArray(fields) && fields.length === 0) ||
-                        (!Array.isArray(fields) && (
-                            <p className="text-center">No Fields Found</p>
-                        ))}
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     )

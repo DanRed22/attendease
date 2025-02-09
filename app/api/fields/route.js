@@ -8,7 +8,7 @@ export async function GET() {
     try {
         const field = await prisma.fields.findMany({
             orderBy: {
-                createdAt: 'desc',
+                createdAt: 'asc',
             },
         })
         return NextResponse.json({

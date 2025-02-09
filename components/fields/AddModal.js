@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import Swal from 'sweetalert2'
 
-const AddModal = ({ show, handleClose }) => {
+const AddModal = ({ show, handleClose, refreshFields }) => {
     const [fieldData, setFieldData] = useState({
         display_name: '',
         name: '',
@@ -37,7 +37,10 @@ const AddModal = ({ show, handleClose }) => {
                 text: 'Field added successfully',
                 showConfirmButton: true,
                 confirmButtonText: 'Close',
-                willClose: () => handleClose(),
+                willClose: () => {
+                    refreshFields()
+                    handleClose()
+                },
             })
         } catch (error) {
             console.error('Error adding field:', error)
