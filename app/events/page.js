@@ -1,5 +1,5 @@
+'use client'
 import { useState, useEffect } from 'react'
-;('use client')
 
 export default function EventsPage() {
     const [events, setEvents] = useState([])

@@ -130,8 +130,8 @@ const AddModal = ({ show, handleClose, refreshFields }) => {
                                     <option value="number">Number</option>
                                     <option value="textarea">Textarea</option>
                                     <option value="select">Select</option>
-                                    <option value="date">Date</option>
-                                    <option value="checkbox">Checkbox</option>
+                                    {/* <option value="date">Date</option>
+                                    <option value="checkbox">Checkbox</option> */}
                                 </select>
                             </div>
                         </div>
