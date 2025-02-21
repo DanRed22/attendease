@@ -7,6 +7,7 @@ const prisma = new Prisma.PrismaClient()
 export async function POST(request) {
     try {
         const data = await request.json()
+        console.log('BODY', data)
         const field = await prisma.fields.delete({
             where: {
                 id: data.id,

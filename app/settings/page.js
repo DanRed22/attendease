@@ -103,7 +103,8 @@ export default function Settings() {
             <div className="flex justify-center flex-col mt-8 container w-full p-4 bg-slate-600 rounded-lg shadow-md">
                 <h3 className="font-bold text-xl">Table Fields</h3>
                 <p className="text-sm text-gray-300">
-                    Add, edit, and delete fields
+                    Add, edit, and delete fields. Note that duplicate database
+                    name will not be added to the table.
                 </p>
                 <div className="w-full flex justify-end">
                     <div className="tooltip" data-tip="Add Field">
@@ -171,6 +172,42 @@ export default function Settings() {
                                 </td>
                                 <td className="border p-2 overflow-elipsis ">
                                     Required
+                                </td>
+                                <td className="border p-2">DEFAULT</td>
+                            </tr>
+                            <tr
+                                key={'time_in'}
+                                className="text-center p-4 border-b border-gray-300 bg-slate-400 text-black"
+                            >
+                                <td className="border p-2 overflow-elipsis ">
+                                    Time In
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    time_in
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    time
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    Optional
+                                </td>
+                                <td className="border p-2">DEFAULT</td>
+                            </tr>
+                            <tr
+                                key={'time_out'}
+                                className="text-center p-4 border-b border-gray-300 bg-slate-400 text-black"
+                            >
+                                <td className="border p-2 overflow-elipsis ">
+                                    Time Out
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    time_out
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    time
+                                </td>
+                                <td className="border p-2 overflow-elipsis ">
+                                    Optional
                                 </td>
                                 <td className="border p-2">DEFAULT</td>
                             </tr>

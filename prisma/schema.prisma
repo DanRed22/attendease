@@ -12,6 +12,8 @@ model attendees {
     name      String
     email     String
     data      String?
+    timeIn    DateTime?
+    timeOut   DateTime?
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     deletedAt DateTime?
@@ -33,7 +35,7 @@ model users {
 model fields {
     id        Int       @id @default(autoincrement())
     display_name String
-    name      String
+    name      String @unique
     type      String? @default("text")
     config    String?
     required  Boolean   @default(false)
