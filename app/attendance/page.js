@@ -65,7 +65,7 @@ export default function FieldsPage() {
         fetchData()
     }, [])
     return (
-        <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full h-screen flex flex-col items-center justify-start">
             <div className="flex w-full justify-between items-center px-10 py-4">
                 <h1 className="text-3xl font-bold justify-start">Attendance</h1>
                 <div className="tooltip-bottom tooltip" data-tip="Add Field">
@@ -74,7 +74,7 @@ export default function FieldsPage() {
                     </button>
                 </div>
             </div>
-            <div className="w-[95%] p-2 border overflow-scroll">
+            <div className="w-[95%] p-2 shadow-lg overflow-scroll rounded-lg bg-slate-700 ">
                 {loading && <p className="text-center p-4">Loading...</p>}
                 {!loading && (
                     <AttendanceTable

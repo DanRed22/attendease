@@ -10,15 +10,16 @@ export async function GET(request) {
 
         console.log('Search:', search)
 
-        const whereCondition = search
-            ? {
-                  OR: [
-                      { name: { contains: search, mode: 'insensitive' } },
-                      { email: { contains: search, mode: 'insensitive' } },
-                      { data: { contains: search, mode: 'insensitive' } },
-                  ],
-              }
-            : {} // No filter if search is empty
+        const whereCondition = {
+            deletedAt: null, // Always filter out deleted records
+            ...(search && {
+                OR: [
+                    { name: { contains: search, mode: 'insensitive' } },
+                    { email: { contains: search, mode: 'insensitive' } },
+                    { data: { contains: search, mode: 'insensitive' } },
+                ],
+            }),
+        }
 
         const field = await prisma.attendees.findMany({
             where: whereCondition,
@@ -64,24 +65,33 @@ export async function POST(request) {
 
 export async function PUT(request) {
     try {
-        const data = await request.json()
+        const received_data = await request.json()
+        if (received_data?.data && typeof received_data.data === 'object') {
+            received_data.data = JSON.stringify(received_data.data)
+        }
+        const id = received_data.id
+        delete received_data.id
+        console.log('ID', id)
+        console.log('RECEIVED DATA', received_data)
         const field = await prisma.attendees.update({
             where: {
-                id: data.id,
+                id: id,
             },
             data: {
-                ...data,
-                updatedAt: moment().format(),
+                ...received_data,
+                updatedAt: moment().toISOString(),
             },
         })
+
         return NextResponse.json({
             field,
             status: 200,
             message: 'Field updated',
         })
     } catch (error) {
+        console.error('Error updating field:', error)
         return NextResponse.json(
-            { message: 'Error updating field' },
+            { message: 'Error updating field', error_message: error.message },
             { status: 500 },
         )
     }
@@ -90,17 +100,20 @@ export async function PUT(request) {
 export async function DELETE(request) {
     try {
         const data = await request.json()
-        const field = await prisma.attendees.delete({
-            where: {
-                id: data.id,
-            },
+        console.log('DATA', data.id)
+
+        const field = await prisma.attendees.update({
+            where: { id: data.id },
+            data: { deletedAt: moment().toISOString() },
         })
+
         return NextResponse.json({
             field,
             status: 200,
             message: 'Field deleted',
         })
     } catch (error) {
+        console.error('Error deleting field:', error)
         return NextResponse.json(
             { message: 'Error deleting field' },
             { status: 500 },

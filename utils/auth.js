@@ -37,9 +37,10 @@ export const logout = async () => {
 }
 
 export const getUserRole = async () => {
-    const user = Cookies.get('user')
+    const user = (await JSON.parse(Cookies.get('user')).user) || null
+    console.log(user.role)
     if (user) {
-        return JSON.parse(user).role
+        return user?.role
     }
     return null
 }
