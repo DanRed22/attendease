@@ -7,11 +7,13 @@ import { FaPencilAlt } from 'react-icons/fa'
 import { getUserRole } from '@/utils/auth'
 import Swal from 'sweetalert2'
 import EditModal from './EditModal'
+import AddAttendeeModal from './AddAttendeeModal'
 
 export default function AttendanceTable({ fields, setData, data, fetchData }) {
     const [role, setRole] = useState(null)
     const [showEditModal, setShowEditModal] = useState(false)
     const [editingAttendee, setEditingAttendee] = useState(null)
+
     useEffect(() => {
         userRole()
     }, [])

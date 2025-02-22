@@ -1,8 +1,46 @@
 'use client'
 import React, { Fragment, useState } from 'react'
+import Swal from 'sweetalert2'
 
-function EditModal({ attendee, fetchData, onClose, saveData }) {
-    const [new_attendee_data, set_new_attendee_data] = useState(attendee)
+export default function AddAttendeeModal({ fetchData, onClose }) {
+    const [attendee, setAttendee] = useState({
+        name: '',
+        email: '',
+    })
+
+    const handleSave = async () => {
+        if (!attendee.name || !attendee.email) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Name and Email are required',
+            })
+            return
+        }
+        try {
+            await fetch('/api/attendees', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(attendee),
+            })
+
+            Swal.file({
+                icon: 'success',
+                title: 'Success',
+                text: 'Attendee added successfully',
+                confirmButtonText: 'Close',
+                showConfirmButton: true,
+                willClose: async () => {
+                    await fetchData()
+                    onClose()
+                },
+            })
+        } catch (error) {
+            console.error('Error updating attendee:', error.message)
+        }
+    }
     return (
         <Fragment>
             <div className=" absolute z-50 backdrop-blur-md w-full h-full flex top-0 left-0 justify-center items-center">
@@ -17,10 +55,10 @@ function EditModal({ attendee, fetchData, onClose, saveData }) {
                             type="text"
                             placeholder="Name"
                             class="input input-bordered w-full max-w-xs"
-                            value={new_attendee_data?.name || ''}
+                            value={attendee?.name || ''}
                             onChange={(e) =>
-                                set_new_attendee_data({
-                                    ...new_attendee_data,
+                                setAttendee({
+                                    ...attendee,
                                     name: e.target.value,
                                 })
                             }
@@ -35,10 +73,10 @@ function EditModal({ attendee, fetchData, onClose, saveData }) {
                             type="text"
                             placeholder="Email"
                             class="input input-bordered w-full max-w-xs"
-                            value={new_attendee_data?.email || null}
+                            value={attendee?.email || null}
                             onChange={(e) =>
-                                set_new_attendee_data({
-                                    ...new_attendee_data,
+                                setAttendee({
+                                    ...attendee,
                                     email: e.target.value,
                                 })
                             }
@@ -59,7 +97,7 @@ function EditModal({ attendee, fetchData, onClose, saveData }) {
                             <button
                                 onClick={() => {
                                     console.log('Saving data...')
-                                    saveData(new_attendee_data)
+                                    handleSave()
                                     onClose()
                                 }}
                                 className="btn"
@@ -73,5 +111,3 @@ function EditModal({ attendee, fetchData, onClose, saveData }) {
         </Fragment>
     )
 }
-
-export default EditModal

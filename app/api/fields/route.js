@@ -28,6 +28,7 @@ export async function GET() {
 export async function POST(request) {
     try {
         const data = await request.json()
+        data.config = JSON.stringify(data.config)
         const field = await prisma.fields.create({
             data: {
                 ...data,
@@ -41,6 +42,7 @@ export async function POST(request) {
             message: 'Field created',
         })
     } catch (error) {
+        console.error('Error creating field:', error)
         return NextResponse.json(
             { message: 'Error creating field' },
             { status: 500 },
@@ -50,7 +52,8 @@ export async function POST(request) {
 
 export async function PUT(request) {
     try {
-        const data = await request.json()
+        let data = await request.json()
+        data.config = JSON.stringify(data.config)
         const field = await prisma.fields.update({
             where: {
                 id: data.id,
