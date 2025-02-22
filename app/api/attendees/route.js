@@ -6,43 +6,107 @@ const prisma = new Prisma.PrismaClient()
 
 export async function GET(request) {
     try {
-        const search = request.nextUrl.searchParams.get('search') || ''
-
-        console.log('Search:', search)
+        const url = new URL(request.url) // Properly extract search params
+        const search = url.searchParams.get('search') || ''
+        const take = Number(url.searchParams.get('take')) || 25
+        const offset = Number(url.searchParams.get('offset') || 0)
+        // console.log('Search:', search)
 
         const whereCondition = {
-            deletedAt: null, // Always filter out deleted records
-            ...(search && {
-                OR: [
-                    { name: { contains: search, mode: 'insensitive' } },
-                    { email: { contains: search, mode: 'insensitive' } },
-                    { data: { contains: search, mode: 'insensitive' } },
-                ],
-            }),
+            deletedAt: null,
+            ...(search
+                ? {
+                      OR: [
+                          { name: { contains: search, mode: 'insensitive' } },
+                          { email: { contains: search, mode: 'insensitive' } },
+                      ],
+                  }
+                : {}),
         }
 
-        const field = await prisma.attendees.findMany({
-            where: whereCondition,
+        //console.log('Where Condition:', JSON.stringify(whereCondition, null, 2))
+
+        const fields = await prisma.attendees.findMany({
+            //where: whereCondition,
+            where: {
+                deletedAt: null,
+                OR: [
+                    { email: { contains: String(search) } },
+                    { name: { contains: String(search) } },
+                    { data: { contains: String(search) } },
+                ],
+            },
             orderBy: { createdAt: 'asc' },
+            take: take,
+            skip: take * offset,
         })
 
+        const count_present = await prisma.attendees.count({
+            where: {
+                deletedAt: null,
+                timeIn: { not: null },
+            },
+        })
+
+        const count_not_present = await prisma.attendees.count({
+            where: {
+                deletedAt: null,
+                timeIn: null,
+            },
+        })
+
+        const count_time_out = await prisma.attendees.count({
+            where: {
+                deletedAt: null,
+                timeOut: { not: null },
+            },
+        })
+
+        const count_not_timed_out = await prisma.attendees.count({
+            where: {
+                timeOut: null,
+                deletedAt: null,
+            },
+        })
+
+        const total = await prisma.attendees.count({
+            where: {
+                deletedAt: null,
+            },
+        })
+
+        // console.log('Fields:', fields) // Log the result of the query
+
+        // console.log('Fields:', fields) // Log the fields
         return NextResponse.json({
-            data: field || [],
+            data: fields,
+            count: {
+                present: count_present,
+                not_present: count_not_present,
+                time_out: count_time_out,
+                not_timed_out: count_not_timed_out,
+                total: total,
+            },
             message: 'Fields found',
             status: 200,
         })
     } catch (error) {
-        return NextResponse.json({
-            data: [],
-            message: 'Error fetching fields',
-            status: 500,
-        })
+        console.error('Error fetching fields:', error || 'Unknown error')
+        return NextResponse.json(
+            {
+                data: [],
+                message: 'Error fetching fields',
+                error: error ? error.message : 'Unknown error',
+            },
+            { status: 500 },
+        )
     }
 }
 
 export async function POST(request) {
     try {
         const data = await request.json()
+        data.data = JSON.stringify({})
         const field = await prisma.attendees.create({
             data: {
                 ...data,
@@ -53,11 +117,11 @@ export async function POST(request) {
         return NextResponse.json({
             field,
             status: 201,
-            message: 'Field created',
+            message: 'attendee created',
         })
     } catch (error) {
         return NextResponse.json(
-            { message: 'Error creating field' },
+            { message: 'Error creating attendee' },
             { status: 500 },
         )
     }
@@ -71,7 +135,7 @@ export async function PUT(request) {
         }
         const id = received_data.id
         delete received_data.id
-        console.log('ID', id)
+        //console.log('ID', id)
         console.log('RECEIVED DATA', received_data)
         const field = await prisma.attendees.update({
             where: {
