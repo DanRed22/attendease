@@ -59,11 +59,7 @@ export default function AttendanceInput({
             setShowSaveButton(false)
             let temp_data = { ...attendee } // Ensure temp_data is a new reference
 
-            if (field.type === 'checkbox') {
-                temp_data.data[field.name] = !newValue
-            } else {
-                temp_data.data[field.name] = newValue
-            }
+            temp_data.data[field.name] = newValue
 
             const temp_arr_data = [...data] // Ensure temp_arr_data is a new reference
             temp_arr_data[index] = temp_data
@@ -79,12 +75,13 @@ export default function AttendanceInput({
         }
     }
     const handleChange = (e) => {
-        const newValue = e.target.value
-
+        let newValue
         if (field.type === 'checkbox') {
-            setValue(e)
-            handleSave(e)
+            newValue = e.target.checked
+            setValue(newValue)
+            handleSave(newValue) // Explicitly pass the new value
         } else if (field.type === 'select') {
+            newValue = e.target.value
             Swal.fire({
                 icon: 'info',
                 title: 'Save',
@@ -101,6 +98,7 @@ export default function AttendanceInput({
                 }
             })
         } else {
+            newValue = e.target.value
             setValue(newValue)
             setShowSaveButton(true) // Ensure save button appears
         }
@@ -199,7 +197,7 @@ export default function AttendanceInput({
                         className="checkbox"
                         type="checkbox"
                         checked={value ? value : false}
-                        onChange={() => handleChange(!value)}
+                        onChange={(e) => handleChange(e)}
                     />
                 </div>
             ) : null}
